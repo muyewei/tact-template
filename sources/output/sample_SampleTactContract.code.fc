@@ -31,6 +31,11 @@
     return (($self'owner, $self'counter), $self'counter);
 }
 
+((slice, int), slice) $SampleTactContract$_fun_owner((slice, int) $self) impure inline_ref {
+    var (($self'owner, $self'counter)) = $self;
+    return (($self'owner, $self'counter), $self'owner);
+}
+
 ;;
 ;; Receivers of a Contract SampleTactContract
 ;;
@@ -46,6 +51,13 @@
     var ($self'owner, $self'counter) = $self;
     ($self'owner, $self'counter)~$SampleTactContract$_fun_add(1);
     ($self'owner, $self'counter)~$SampleTactContract$_fun_reply(__gen_cell_comment_3e96a74bf6f672d7e00d5d9c31c1437327e624b173365dc10e024c6410eff184());
+    return (($self'owner, $self'counter), ());
+}
+
+((slice, int), ()) $SampleTactContract$_internal_text_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94((slice, int) $self) impure inline {
+    var ($self'owner, $self'counter) = $self;
+    ($self'owner, $self'counter)~$SampleTactContract$_fun_add(1);
+    ($self'owner, $self'counter)~$SampleTactContract$_fun_reply(__gen_cell_comment_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94());
     return (($self'owner, $self'counter), ());
 }
 
@@ -66,6 +78,12 @@ _ %counter() method_id(104984) {
     return res;
 }
 
+_ %owner() method_id(83229) {
+    var self = $SampleTactContract$_contract_load();
+    var res = self~$SampleTactContract$_fun_owner();
+    return res;
+}
+
 _ supported_interfaces() method_id {
     return (
         "org.ton.introspection.v0"H >> 128,
@@ -76,7 +94,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmYzQHN2n6D1zEBuJyBnJrnmhQWzgZWhaNppmwsAFW4kNi";
+    return "ipfs://QmTagnb2cgiuWDJU5UsjGY2cA7NYLdE2szz4UT63stDs74";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -121,6 +139,12 @@ _ lazy_deployment_completed() method_id {
         ;; Receive "increment" message
         if (text_op == 0xc4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae) {
             self~$SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae();
+            return (self, true);
+        }
+        
+        ;; Receive "test" message
+        if (text_op == 0xf9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94) {
+            self~$SampleTactContract$_internal_text_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94();
             return (self, true);
         }
     }

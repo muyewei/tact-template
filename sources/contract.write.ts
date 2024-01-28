@@ -22,7 +22,7 @@ const Sleep = (ms: number)=> {
     const walletSender = walletContract.sender(key.secretKey);
 
     // open the contract address
-    let owner = Address.parse("0QD8d5vx-7hiviuMMCU_xXHyg9PToCHgQB1MwcTkgG7dIbkt");
+    let owner = Address.parse("0QACL-EogWURfk1m1M-XvZ_NYW00313ixjleJNt--P7oQiRI");
     let init = await SampleTactContract.init(owner);
     let contract_address = contractAddress(0, init);
     let contract = await SampleTactContract.fromAddress(contract_address);
@@ -30,8 +30,10 @@ const Sleep = (ms: number)=> {
 
     // send message to contract
     await contract_open.send(walletSender, { value: toNano(1) }, "increment");
-    
+    await contract_open.send(walletSender, { value: toNano(1) }, "test");
+
     await Sleep(3000);
     console.log("Counter Value: " + (await contract_open.getCounter()));
+    console.log("Counter Test: " + (await contract_open.getOwner()));
 })();
 

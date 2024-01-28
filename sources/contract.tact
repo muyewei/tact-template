@@ -8,10 +8,12 @@ contract SampleTactContract with Deployable {
 
     owner: Address;
     counter: Int as uint32;
+    //myCounter: Int as uint32;
 
     init(owner: Address) {
         self.owner = owner;
         self.counter = 0;
+        //self.myCounter = 1;
     }
 
     fun add(v: Int) {
@@ -33,7 +35,16 @@ contract SampleTactContract with Deployable {
         self.reply("incremented".asComment());
     }
 
+    receive("test") {
+        self.add(1);
+        self.reply("test".asComment());
+    }
+
     get fun counter(): Int {
         return self.counter;
+    }
+
+    get fun owner(): Address {
+        return self.owner;
     }
 }

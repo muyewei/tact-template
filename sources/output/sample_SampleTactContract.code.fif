@@ -1,3 +1,5 @@
+ode_modules\\@tact-lang\\compiler\\stdlib\\stdlib.fc` `C:\\code\\ton\\tact-template\
+ode_modules\\@tact-lang\\compiler\\stdlib\\stdlib_ex.fc` `C:/code/ton/tact-template/sources/output/sample_SampleTactContract.code.fc` incl:`C:/code/ton/tact-template/sources/output/sample_SampleTactContract.headers.fc` incl:`C:/code/ton/tact-template/sources/output/sample_SampleTactContract.stdlib.fc` incl:`C:/code/ton/tact-template/sources/output/sample_SampleTactContract.constants.fc` incl:`C:/code/ton/tact-template/sources/output/sample_SampleTactContract.storage.fc` 
 PROGRAM{
   DECLPROC __tact_verify_address
   DECLPROC __tact_load_address
@@ -22,6 +24,7 @@ PROGRAM{
   DECLPROC $global_send
   DECLPROC $SampleTactContract$_fun_add
   DECLPROC $SampleTactContract$_fun_counter
+  DECLPROC $SampleTactContract$_fun_owner
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $SampleTactContract$_fun_forward
   DECLPROC $SampleTactContract$_fun_reply
@@ -29,8 +32,10 @@ PROGRAM{
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $SampleTactContract$_internal_binary_Add
   DECLPROC $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae
+  DECLPROC $SampleTactContract$_internal_text_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94
   DECLPROC $SampleTactContract$_internal_binary_Deploy
   104984 DECLMETHOD %counter
+  83229 DECLMETHOD %owner
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
   115390 DECLMETHOD lazy_deployment_completed
@@ -292,6 +297,9 @@ PROGRAM{
   $SampleTactContract$_fun_counter PROCREF:<{
     DUP
   }>
+  $SampleTactContract$_fun_owner PROCREF:<{
+    OVER
+  }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
   $SampleTactContract$_fun_forward PROCREF:<{
@@ -341,6 +349,12 @@ PROGRAM{
     B{b5ee9c7241010101001100001e00000000696e6372656d656e7465648430bf20} B>boc PUSHREF
     $SampleTactContract$_fun_reply INLINECALLDICT
   }>
+  $SampleTactContract$_internal_text_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94 PROCINLINE:<{
+    1 PUSHINT
+    $SampleTactContract$_fun_add INLINECALLDICT
+    B{b5ee9c7241010101000a000010000000007465737471b05e71} B>boc PUSHREF
+    $SampleTactContract$_fun_reply INLINECALLDICT
+  }>
   $SampleTactContract$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
     $DeployOk$_store_cell INLINECALLDICT
@@ -351,6 +365,11 @@ PROGRAM{
     $SampleTactContract$_fun_counter INLINECALLDICT
     2 1 BLKDROP2
   }>
+  %owner PROC:<{
+    $SampleTactContract$_contract_load INLINECALLDICT
+    $SampleTactContract$_fun_owner INLINECALLDICT
+    2 1 BLKDROP2
+  }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
     209801025412363888721030803524359905849 PUSHINT
@@ -358,7 +377,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d597a51484e326e3644317a4542754a79426e4a726e6d6851577a675a5768614e70706d7773414657346b4e69} PUSHSLICE
+    x{697066733a2f2f516d5461676e62326367697557444a553555736a4759326341374e594c644532737a7a3455543633737444733734} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -406,10 +425,19 @@ PROGRAM{
     0 EQINT
     IF:<{
       HASHSU
+      DUP
       89092981215441470209245890604563109773385607357076622359718516871332286001838 PUSHINT
       EQUAL
       IFJMP:<{
+        DROP
         $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      112953218269766239368568806868099996543351823903886692441276002410189996182676 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $SampleTactContract$_internal_text_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94 INLINECALLDICT
         TRUE
         RETALT
       }>
