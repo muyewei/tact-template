@@ -14,7 +14,7 @@
 (slice, int) $SampleTactContract$_contract_init(slice $owner) impure inline_ref {
     var (($self'owner, $self'counter)) = (null(), null());
     $self'owner = $owner;
-    $self'counter = 0;
+    $self'counter = 1;
     return ($self'owner, $self'counter);
 }
 
@@ -47,10 +47,23 @@
     return (($self'owner, $self'counter), ());
 }
 
+(((slice, int)), ()) $SampleTactContract$_internal_binary_Multiply((slice, int) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'counter) = $self;
+    var ($msg'val) = $msg;
+    $self'counter = ($self'counter * $msg'val);
+    return (($self'owner, $self'counter), ());
+}
+
+(((slice, int)), ()) $SampleTactContract$_internal_binary_Divide((slice, int) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'counter) = $self;
+    var ($msg'val) = $msg;
+    $self'counter = ($self'counter / $msg'val);
+    return (($self'owner, $self'counter), ());
+}
+
 ((slice, int), ()) $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae((slice, int) $self) impure inline {
     var ($self'owner, $self'counter) = $self;
-    ($self'owner, $self'counter)~$SampleTactContract$_fun_add(1);
-    ($self'owner, $self'counter)~$SampleTactContract$_fun_reply(__gen_cell_comment_3e96a74bf6f672d7e00d5d9c31c1437327e624b173365dc10e024c6410eff184());
+    $self'counter = ($self'counter + 1);
     return (($self'owner, $self'counter), ());
 }
 
@@ -94,7 +107,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmTagnb2cgiuWDJU5UsjGY2cA7NYLdE2szz4UT63stDs74";
+    return "ipfs://Qme7xnFnKUGXnbADUhWrGkNExX3y8nmyTWwfCfdMQqHYiS";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -122,6 +135,20 @@ _ lazy_deployment_completed() method_id {
     if (op == 2278832834) {
         var msg = in_msg~$Add$_load();
         self~$SampleTactContract$_internal_binary_Add(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Multiply message
+    if (op == 2395218717) {
+        var msg = in_msg~$Multiply$_load();
+        self~$SampleTactContract$_internal_binary_Multiply(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Divide message
+    if (op == 1743298743) {
+        var msg = in_msg~$Divide$_load();
+        self~$SampleTactContract$_internal_binary_Divide(msg);
         return (self, true);
     }
     

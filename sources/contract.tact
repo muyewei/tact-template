@@ -4,16 +4,22 @@ message Add {
     amount: Int as uint32;
 }
 
+message Multiply{
+    val: Int as uint32;
+}
+
+message Divide{
+    val: Int as uint32;
+}
+
 contract SampleTactContract with Deployable {
 
     owner: Address;
     counter: Int as uint32;
-    //myCounter: Int as uint32;
 
     init(owner: Address) {
         self.owner = owner;
-        self.counter = 0;
-        //self.myCounter = 1;
+        self.counter = 1;
     }
 
     fun add(v: Int) {
@@ -30,9 +36,16 @@ contract SampleTactContract with Deployable {
         self.add(msg.amount);
     }
 
+    receive(msg: Multiply) {
+        self.counter = self.counter * msg.val;
+    }
+
+    receive(msg: Divide) {
+        self.counter = self.counter / msg.val;
+    }
+
     receive("increment") {
-        self.add(1);
-        self.reply("incremented".asComment());
+        self.counter = self.counter + 1;
     }
 
     receive("test") {

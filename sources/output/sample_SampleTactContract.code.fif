@@ -14,6 +14,8 @@ PROGRAM{
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
   DECLPROC $Add$_load
+  DECLPROC $Multiply$_load
+  DECLPROC $Divide$_load
   DECLPROC $SampleTactContract$_store
   DECLPROC $SampleTactContract$_load
   DECLPROC $StateInit$_not_null
@@ -31,6 +33,8 @@ PROGRAM{
   DECLPROC $SampleTactContract$_fun_notify
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $SampleTactContract$_internal_binary_Add
+  DECLPROC $SampleTactContract$_internal_binary_Multiply
+  DECLPROC $SampleTactContract$_internal_binary_Divide
   DECLPROC $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae
   DECLPROC $SampleTactContract$_internal_text_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94
   DECLPROC $SampleTactContract$_internal_binary_Deploy
@@ -123,6 +127,24 @@ PROGRAM{
     32 LDU
     SWAP
   }>
+  $Multiply$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2395218717 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    32 LDU
+    SWAP
+  }>
+  $Divide$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    1743298743 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    32 LDU
+    SWAP
+  }>
   $SampleTactContract$_store PROCINLINE:<{
     -ROT
     __tact_store_address INLINECALLDICT
@@ -144,7 +166,7 @@ PROGRAM{
     __tact_load_address INLINECALLDICT
   }>
   $SampleTactContract$_contract_init PROCREF:<{
-    0 PUSHINT
+    1 PUSHINT
   }>
   $SampleTactContract$_contract_load PROCREF:<{
     c4 PUSH
@@ -343,11 +365,14 @@ PROGRAM{
   $SampleTactContract$_internal_binary_Add PROCINLINE:<{
     $SampleTactContract$_fun_add INLINECALLDICT
   }>
+  $SampleTactContract$_internal_binary_Multiply PROCINLINE:<{
+    MUL
+  }>
+  $SampleTactContract$_internal_binary_Divide PROCINLINE:<{
+    DIV
+  }>
   $SampleTactContract$_internal_text_c4f8d72312edfdef5b7bec7833bdbb162d1511bd78a912aed0f2637af65572ae PROCINLINE:<{
-    1 PUSHINT
-    $SampleTactContract$_fun_add INLINECALLDICT
-    B{b5ee9c7241010101001100001e00000000696e6372656d656e7465648430bf20} B>boc PUSHREF
-    $SampleTactContract$_fun_reply INLINECALLDICT
+    INC
   }>
   $SampleTactContract$_internal_text_f9b941877628a233a719e129140e93df1eeb5a65aeea5fbd16fb0b9af4004c94 PROCINLINE:<{
     1 PUSHINT
@@ -377,7 +402,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5461676e62326367697557444a553555736a4759326341374e594c644532737a7a3455543633737444733734} PUSHSLICE
+    x{697066733a2f2f516d6537786e466e4b5547586e62414455685772476b4e4578583379386e6d79545777664366644d517148596953} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -410,6 +435,26 @@ PROGRAM{
       $Add$_load INLINECALLDICT
       NIP
       $SampleTactContract$_internal_binary_Add INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    2395218717 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $Multiply$_load INLINECALLDICT
+      NIP
+      $SampleTactContract$_internal_binary_Multiply INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    1743298743 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $Divide$_load INLINECALLDICT
+      NIP
+      $SampleTactContract$_internal_binary_Divide INLINECALLDICT
       TRUE
     }>
     DUP

@@ -42,6 +42,12 @@ cell $DeployOk$_store_cell((int) v) inline;
 ;; $Add$_load
 (slice, ((int))) $Add$_load(slice sc_0) inline;
 
+;; $Multiply$_load
+(slice, ((int))) $Multiply$_load(slice sc_0) inline;
+
+;; $Divide$_load
+(slice, ((int))) $Divide$_load(slice sc_0) inline;
+
 ;; $SampleTactContract$_store
 builder $SampleTactContract$_store(builder build_0, (slice, int) v) inline;
 
